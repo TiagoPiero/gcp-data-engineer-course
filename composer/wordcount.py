@@ -7,7 +7,7 @@ def run():
         runner='DataflowRunner',  # Cambia a 'DirectRunner' para local. Con DataFlowRunner se ejecuta lo mismo pero en lugar de ejecutarse localmente, se ejecuta en la nube de Google Cloud Dataflow.
         project='gcp-data-engineer-curso05',  # Reemplaza con tu ID de proyecto
         region = 'us-central1',
-        temp_location='gs://gcs-bucket-curso05-tp/temp',  # Reemplaza con tu bucket de Cloud Storage
+        temp_location='gs://gcs-bucket-curso05/temp',  # Reemplaza con tu bucket de Cloud Storage
     )
 
     with beam.Pipeline(options=options) as p:
@@ -16,7 +16,7 @@ def run():
             | "Leer archivo" >> beam.io.ReadFromText('gs://dataflow-samples/shakespeare/kinglear.txt')  # Reemplaza con la ruta de tu archivo de entrada
             | "Separar palabras" >> beam.FlatMap(lambda line: line.split())
             | "Contar palabras" >> beam.combiners.Count.PerElement()
-            | "Guardar resultados" >> beam.io.WriteToText('gs://gcs-bucket-curso05-tp/output/wordcount')  # Reemplaza con la ruta de tu archivo de salida
+            | "Guardar resultados" >> beam.io.WriteToText('gs://gcs-bucket-curso05/output/wordcount')  # Reemplaza con la ruta de tu archivo de salida
         )
 
     result = p.run()
